@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ฟอร์มรับสมัครนักศึกษาใหม่</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-bg: #FFE7F0;
+    --lavender: #EAE1FF;
+    --mint: #D9F7E9;
+    --peach: #FFF0DC;
+    --bubblegum: #FF8FC4;
+    --bubblegum-dark: #F868AC;
+    --lilac: #B79CFF;
+    --sky: #8FD6FF;
+    --plum: #5B4770;
+    --plum-soft: #8A7699;
+    --card-bg: #FFFDFC;
+    --line: #F1DCEA;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Prompt', sans-serif;
+    color: var(--plum);
+    background:
+      radial-gradient(circle at 8% 12%, var(--lavender) 0%, transparent 40%),
+      radial-gradient(circle at 92% 8%, var(--mint) 0%, transparent 38%),
+      radial-gradient(circle at 85% 92%, var(--peach) 0%, transparent 42%),
+      radial-gradient(circle at 5% 90%, var(--sky) 0%, transparent 35%),
+      var(--pink-bg);
+    padding: 48px 16px 80px;
+    position: relative;
+    overflow-x:hidden;
+  }
+
+  /* floating doodles */
+  .doodle{
+    position:absolute;
+    font-size: 28px;
+    opacity:.55;
+    animation: float 6s ease-in-out infinite;
+    user-select:none;
+    pointer-events:none;
+  }
+  .doodle.d1{ top:6%; left:6%; animation-delay:0s; font-size:34px;}
+  .doodle.d2{ top:14%; right:9%; animation-delay:1.2s; font-size:26px;}
+  .doodle.d3{ bottom:10%; left:9%; animation-delay:.6s; font-size:30px;}
+  .doodle.d4{ bottom:18%; right:6%; animation-delay:1.8s; font-size:22px;}
+  .doodle.d5{ top:45%; left:2%; animation-delay:2.4s; font-size:20px;}
+  .doodle.d6{ top:38%; right:2%; animation-delay:.3s; font-size:24px;}
+
+  @keyframes float{
+    0%,100%{ transform: translateY(0) rotate(-4deg); }
+    50%{ transform: translateY(-14px) rotate(4deg); }
+  }
+
+  .wrap{
+    max-width: 720px;
+    margin: 0 auto;
+    position:relative;
+  }
+
+  .card{
+    background: var(--card-bg);
+    border-radius: 32px;
+    box-shadow: 0 18px 45px -18px rgba(184, 120, 170, .45), 0 4px 12px rgba(184,120,170,.15);
+    border: 2px solid #FFFFFF;
+    overflow:hidden;
+  }
+
+  .hero{
+    background: linear-gradient(135deg, var(--bubblegum) 0%, var(--lilac) 100%);
+    padding: 38px 34px 46px;
+    position:relative;
+    color:#fff;
+    text-align:center;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height:34px;
+    background: var(--card-bg);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    transform: scaleX(1.4);
+  }
+  .badge-icon{
+    width:64px; height:64px;
+    margin:0 auto 14px;
+    background: rgba(255,255,255,.25);
+    border: 2px solid rgba(255,255,255,.7);
+    border-radius: 20px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:30px;
+    transform: rotate(-6deg);
+  }
+  .hero h1{
+    font-family:'Mali', cursive;
+    font-weight:700;
+    font-size: 30px;
+    margin: 0 0 8px;
+    letter-spacing:.3px;
+  }
+  .hero p.sub{
+    margin:0;
+    font-size:14px;
+    opacity:.95;
+  }
+  .hero .meta{
+    margin-top:14px;
+    display:inline-flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .pill-meta{
+    background: rgba(255,255,255,.28);
+    border:1px solid rgba(255,255,255,.6);
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:12.5px;
+  }
+
+  form{
+    padding: 30px 34px 40px;
+  }
+
+  .section{
+    margin-bottom: 30px;
+  }
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .section-num{
+    width:30px; height:30px;
+    background: var(--peach);
+    border-radius: 10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px;
+    flex-shrink:0;
+  }
+  .section-head h2{
+    font-family:'Mali', cursive;
+    font-size:19px;
+    margin:0;
+    color: var(--plum);
+  }
+
+  label{
+    display:block;
+    font-size: 13.5px;
+    font-weight:500;
+    color: var(--plum-soft);
+    margin-bottom:6px;
+  }
+  .req{ color: var(--bubblegum-dark); }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="date"],
+  input[type="number"],
+  textarea{
+    width:100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 2px solid var(--line);
+    background: #FFFBFD;
+    font-family:'Prompt', sans-serif;
+    font-size: 14.5px;
+    color: var(--plum);
+    outline:none;
+    transition: border-color .18s, box-shadow .18s, transform .18s;
+  }
+  input::placeholder, textarea::placeholder{ color:#CBB8CB; }
+  input:focus, textarea:focus{
+    border-color: var(--bubblegum);
+    box-shadow: 0 0 0 4px rgba(255,143,196,.18);
+    transform: translateY(-1px);
+  }
+  textarea{ resize: vertical; min-height:80px; }
+
+  .grid2{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:14px;
+  }
+  .grid3{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:14px;
+  }
+  .field{ margin-bottom:14px; }
+
+  .unit-input{ position:relative; }
+  .unit-input input{ padding-right:44px; }
+  .unit-input span{
+    position:absolute;
+    right:14px; top:50%;
+    transform:translateY(-50%);
+    font-size:12.5px;
+    color: var(--plum-soft);
+    background: var(--mint);
+    padding:2px 8px;
+    border-radius:999px;
+  }
+
+  /* major selection pills */
+  .major-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
+    gap:10px;
+  }
+  .major-option{ position:relative; }
+  .major-option input{ position:absolute; opacity:0; width:0; height:0; }
+  .major-option label{
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    text-align:center;
+    padding: 14px 8px;
+    border-radius: 18px;
+    border: 2px solid var(--line);
+    background: #fff;
+    cursor:pointer;
+    transition: all .18s;
+    font-size:13px;
+  }
+  .major-option label .code{
+    font-family:'Mali', cursive;
+    font-weight:700;
+    font-size: 17px;
+    color: var(--plum);
+  }
+  .major-option label .name{
+    font-size:11px;
+    color: var(--plum-soft);
+  }
+  .major-option input:checked + label{
+    background: linear-gradient(135deg, var(--bubblegum) 0%, var(--lilac) 100%);
+    border-color: transparent;
+    box-shadow: 0 8px 18px -8px rgba(248,104,172,.6);
+    transform: translateY(-2px) scale(1.03);
+  }
+  .major-option input:checked + label .code,
+  .major-option input:checked + label .name{ color:#fff; }
+  .major-option input:focus-visible + label{
+    outline: 3px solid var(--lilac);
+    outline-offset:2px;
+  }
+
+  /* gender pills */
+  .choice-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .choice-row .major-option label{ padding:9px 18px; border-radius:999px; flex-direction:row; }
+  .choice-row .major-option label .name{ font-size:13px; }
+
+  /* photo upload */
+  .photo-row{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .photo-frame{
+    width:118px; height:140px;
+    background: var(--mint);
+    border: 3px dashed var(--lilac);
+    border-radius: 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    overflow:hidden;
+    position:relative;
+    transform: rotate(-2deg);
+  }
+  .photo-frame img{
+    width:100%; height:100%; object-fit:cover; display:none;
+  }
+  .photo-frame .placeholder{
+    text-align:center;
+    color:#5C9E82;
+    font-size:12px;
+    padding: 0 8px;
+  }
+  .photo-frame .placeholder .icon{ font-size:26px; display:block; margin-bottom:4px; }
+  .upload-btn-wrap{ flex:1; min-width:180px; }
+  .upload-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background: var(--peach);
+    border: 2px solid #FFDCA8;
+    color:#9A6A1F;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size:13.5px;
+    font-weight:500;
+    cursor:pointer;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .upload-btn:hover{ transform: translateY(-2px); box-shadow: 0 6px 14px -6px rgba(154,106,31,.4); }
+  .file-hint{ font-size:11.5px; color: var(--plum-soft); margin-top:8px; }
+  input[type="file"]{ display:none; }
+
+  hr.divider{
+    border:none;
+    border-top: 2px dashed var(--line);
+    margin: 28px 0;
+  }
+
+  .submit-row{
+    display:flex;
+    justify-content:center;
+    margin-top: 8px;
+  }
+  button.submit{
+    font-family:'Mali', cursive;
+    font-weight:700;
+    font-size:18px;
+    color:#fff;
+    background: linear-gradient(135deg, var(--bubblegum) 0%, var(--lilac) 100%);
+    border:none;
+    padding: 14px 46px;
+    border-radius: 999px;
+    cursor:pointer;
+    box-shadow: 0 12px 24px -10px rgba(248,104,172,.65);
+    transition: transform .15s, box-shadow .15s;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  button.submit:hover{ transform: translateY(-3px) scale(1.02); }
+  button.submit:active{ transform: translateY(0) scale(.98); }
+
+  .footnote{
+    text-align:center;
+    font-size:12px;
+    color: var(--plum-soft);
+    margin-top:14px;
+  }
+
+  @media (max-width:560px){
+    .grid2, .grid3{ grid-template-columns: 1fr; }
+    form{ padding: 24px 20px 32px; }
+    .hero{ padding: 30px 20px 40px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .doodle{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+  <span class="doodle d1">🌸</span>
+  <span class="doodle d2">☁️</span>
+  <span class="doodle d3">⭐</span>
+  <span class="doodle d4">🎀</span>
+  <span class="doodle d5">💫</span>
+  <span class="doodle d6">🌷</span>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="hero">
+        <div class="badge-icon">📋</div>
+        <h1>ฟอร์มรับสมัครนักศึกษาใหม่</h1>
+        <p class="sub">กรอกข้อมูลให้ครบถ้วน และถูกต้องนะคะ~</p>
+        <div class="meta">
+          
+        </div>
+      </div>
+
+      <form id="enrollForm">
+
+        <!-- Section 1: Photo -->
+        <div class="section">
+          <div class="section-head">
+            <div class="section-num">📸</div>
+            <h2>รูปภาพนักศึกษา</h2>
+          </div>
+          <div class="photo-row">
+            <div class="photo-frame" id="photoFrame">
+              <img id="photoPreview" alt="รูปที่อัปโหลด">
+              <div class="placeholder" id="photoPlaceholder">
+                <span class="icon">🐣</span>
+                ยังไม่มีรูป
+              </div>
+            </div>
+            <div class="upload-btn-wrap">
+              <label class="upload-btn" for="photoInput">📎 แนบรูปภาพ</label>
+              <input type="file" id="photoInput" accept="image/*">
+              <p class="file-hint">แนะนำรูปหน้าตรง พื้นหลังสีอ่อน ไฟล์ .jpg / .png</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Section 2: Major -->
+        <div class="section">
+          <div class="section-head">
+            <div class="section-num">🎓</div>
+            <h2>เลือกสาขาวิชา <span class="req">*</span></h2>
+          </div>
+          <div class="major-grid">
+            <div class="major-option">
+              <input type="radio" name="major" id="major-it" value="IT" required>
+              <label for="major-it"><span class="code">IT</span><span class="name">เทคโนโลยีสารสนเทศ</span></label>
+            </div>
+            <div class="major-option">
+              <input type="radio" name="major" id="major-iti" value="ITI">
+              <label for="major-iti"><span class="code">ITI</span><span class="name">ไอทีอินเตอร์</span></label>
+            </div>
+            <div class="major-option">
+              <input type="radio" name="major" id="major-itt" value="ITT">
+              <label for="major-itt"><span class="code">ITT</span><span class="name">ไอทีธุรกิจ</span></label>
+            </div>
+            <div class="major-option">
+              <input type="radio" name="major" id="major-ine" value="INE">
+              <label for="major-ine"><span class="code">INE</span><span class="name">วิศวกรรมเครือข่าย</span></label>
+            </div>
+            <div class="major-option">
+              <input type="radio" name="major" id="major-inet" value="INET">
+              <label for="major-inet"><span class="code">INET</span><span class="name">เครือข่ายอินเทอร์เน็ต</span></label>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Section 3: Personal info -->
+        <div class="section">
+          <div class="section-head">
+            <div class="section-num">🧸</div>
+            <h2>ข้อมูลส่วนตัว</h2>
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="firstname">ชื่อ <span class="req">*</span></label>
+              <input type="text" id="firstname" placeholder="ชื่อจริง" required>
+            </div>
+            <div class="field">
+              <label for="lastname">นามสกุล <span class="req">*</span></label>
+              <input type="text" id="lastname" placeholder="นามสกุล" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="nickname">ชื่อเล่น</label>
+            <input type="text" id="nickname" placeholder="ชื่อเล่นน่ารักๆ ของเรา 🐰">
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="birthdate">วันเกิด <span class="req">*</span></label>
+              <input type="date" id="birthdate" required>
+            </div>
+            <div class="field">
+              <label>เพศ</label>
+              <div class="choice-row">
+                <div class="major-option">
+                  <input type="radio" name="gender" id="gender-f" value="หญิง">
+                  <label for="gender-f"><span class="name">หญิง 🎀</span></label>
+                </div>
+                <div class="major-option">
+                  <input type="radio" name="gender" id="gender-m" value="ชาย">
+                  <label for="gender-m"><span class="name">ชาย 🌙</span></label>
+                </div>
+                <div class="major-option">
+                  <input type="radio" name="gender" id="gender-o" value="ไม่ระบุ">
+                  <label for="gender-o"><span class="name">ไม่ระบุ ✨</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="weight">น้ำหนัก</label>
+              <div class="unit-input">
+                <input type="number" id="weight" placeholder="เช่น 55" min="0" step="0.1">
+                <span>กก.</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="height">ส่วนสูง</label>
+              <div class="unit-input">
+                <input type="number" id="height" placeholder="เช่น 165" min="0" step="0.1">
+                <span>ซม.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Section 4: Contact / basic info -->
+        <div class="section">
+          <div class="section-head">
+            <div class="section-num">📬</div>
+            <h2>ข้อมูลพื้นฐานสำหรับการสมัครเรียน</h2>
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="phone">เบอร์โทรศัพท์ <span class="req">*</span></label>
+              <input type="tel" id="phone" placeholder="0xx-xxx-xxxx" required>
+            </div>
+            <div class="field">
+              <label for="email">อีเมล <span class="req">*</span></label>
+              <input type="email" id="email" placeholder="[email protected]" required>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label for="school">โรงเรียนเดิม</label>
+              <input type="text" id="school" placeholder="ชื่อโรงเรียนที่จบมา">
+            </div>
+            <div class="field">
+              <label for="gpa">เกรดเฉลี่ย (GPA)</label>
+              <input type="number" id="gpa" placeholder="เช่น 3.25" min="0" max="4" step="0.01">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="address">ที่อยู่ปัจจุบัน</label>
+            <textarea id="address" placeholder="บ้านเลขที่ / ถนน / ตำบล / อำเภอ / จังหวัด / รหัสไปรษณีย์"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="note">เหตุผลที่อยากเรียนสาขานี้ 💭</label>
+            <textarea id="note" placeholder="เล่าให้ฟังหน่อยว่าทำไมถึงสนใจสาขานี้..."></textarea>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="submit">ส่งใบสมัคร 🌈</button>
+        </div>
+        <p class="footnote" id="formNote">กรอกครบแล้วกดส่งได้เลยน้า  (ตัวอย่างฟอร์ม)</p>
+      </form>
+    </div>
+  </div>
+
+<script>
+  const photoInput = document.getElementById('photoInput');
+  const photoPreview = document.getElementById('photoPreview');
+  const photoPlaceholder = document.getElementById('photoPlaceholder');
+
+  photoInput.addEventListener('change', function(){
+    const file = this.files && this.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e){
+      photoPreview.src = e.target.result;
+      photoPreview.style.display = 'block';
+      photoPlaceholder.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  const form = document.getElementById('enrollForm');
+  const formNote = document.getElementById('formNote');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    formNote.textContent = '🎉 ส่งใบสมัครเรียบร้อยแล้ว! ';
+    formNote.style.color = '#F868AC';
+    formNote.style.fontWeight = '600';
+  });
+</script>
+</body>
+</html>
